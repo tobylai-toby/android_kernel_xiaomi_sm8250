@@ -711,7 +711,7 @@ void ax_mdio_write(struct net_device *netdev, int phy_id, int reg, int val)
 	ax_write_cmd(axdev, AX_ACCESS_PHY, phy_id, (__u16)reg, 2, &res);
 }
 
-inline struct net_device_stats *ax_get_stats(struct net_device *netdev)
+struct net_device_stats *ax_get_stats(struct net_device *netdev)
 {
 	return &netdev->stats;
 }
@@ -932,12 +932,12 @@ resubmit:
 	}
 }
 
-inline void *__rx_buf_align(void *data)
+void *__rx_buf_align(void *data)
 {
 	return (void *)ALIGN((uintptr_t)data, RX_ALIGN);
 }
 
-inline void *__tx_buf_align(void *data, u8 tx_align_len)
+void *__tx_buf_align(void *data, u8 tx_align_len)
 {
 	return (void *)ALIGN((uintptr_t)data, tx_align_len);
 }
@@ -1243,7 +1243,7 @@ int ax_submit_rx(struct ax_device *dev, struct rx_desc *desc, gfp_t mem_flags)
 	return ret;
 }
 
-static inline int __ax_poll(struct ax_device *axdev, int budget)
+static int __ax_poll(struct ax_device *axdev, int budget)
 {
 	struct napi_struct *napi = &axdev->napi;
 	int work_done;
@@ -1472,7 +1472,7 @@ static void ax_set_carrier(struct ax_device *axdev)
 		mii_check_media(&axdev->mii, 1, 1);
 }
 
-static inline void __ax_work_func(struct ax_device *axdev)
+static void __ax_work_func(struct ax_device *axdev)
 {
 	if (test_bit(AX_UNPLUG, &axdev->flags) || !netif_running(axdev->netdev))
 		return;
